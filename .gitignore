@@ -1,0 +1,27 @@
+# Virtual environment
+venv/
+
+# Cloned repos
+basic-pitch/
+
+# Audio files (copyrighted)
+*.mp3
+*.wav
+*.flac
+*.m4a
+*.aac
+*.ogg
+Ludovico Einaudi/
+
+# Output MIDI files
+output/
+
+# macOS
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Python
+__pycache__/
+*.pyc
