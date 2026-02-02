@@ -68,6 +68,7 @@ Output MIDI files are saved to the `output/` directory.
 | `download.sh` | Download from YouTube and convert to MIDI |
 | `convert.sh` | Convert local audio files to MIDI |
 | `fix_midi_for_petine.py` | MIDI post-processor for player piano compatibility |
+| `tests/velocity-test.mid` | Test file for calibrating piano velocity threshold |
 | `CLAUDE.md` | Documentation for AI assistants |
 
 ## Player Piano Compatibility
@@ -79,6 +80,20 @@ Tested with QRS Petine system. Should work with any player piano that accepts st
 - Load MIDI files via CompactFlash card (2GB max, Type I)
 - Files must use MIDI channel 1, program 0-5
 - 127 velocity levels supported
+
+### Velocity Calibration
+
+Player piano solenoids need a minimum velocity to actuate the keys. Use the included test file to find your piano's threshold:
+
+```bash
+# Copy to your CompactFlash card
+cp tests/velocity-test.mid /Volumes/YOUR_CF_CARD/
+```
+
+The test file contains:
+1. **Velocity sweep** (0-25s) - Same note at velocities 127→10. Note when keys stop sounding.
+2. **Low/Medium/High comparison** (27-40s) - Patterns at velocity 40, 80, 120.
+3. **Crescendo** (41-47s) - Scale from velocity 30→127.
 
 ## Credits
 
