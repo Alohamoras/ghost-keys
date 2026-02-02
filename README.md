@@ -8,6 +8,7 @@ Uses Spotify's [basic-pitch](https://github.com/spotify/basic-pitch) for audio-t
 
 - macOS, Linux, or Windows
 - Python 3.11 (basic-pitch doesn't support 3.12+)
+- yt-dlp and ffmpeg (optional, for YouTube downloads)
 
 ## Setup
 
@@ -21,9 +22,26 @@ source venv/bin/activate
 
 # Install dependencies
 pip install basic-pitch
+
+# Optional: for YouTube downloads
+brew install yt-dlp ffmpeg
 ```
 
 ## Usage
+
+### From YouTube
+
+```bash
+# Download and convert in one command
+./download.sh "https://youtube.com/watch?v=..."
+
+# With custom output name
+./download.sh "https://youtube.com/watch?v=..." "nuvole-bianche"
+```
+
+> **Note:** Downloading YouTube content may violate YouTube's Terms of Service. This tool is provided for personal, non-commercial use only. Please respect copyright and the rights of content creators.
+
+### From local files
 
 ```bash
 # Convert audio files to player-piano-compatible MIDI
@@ -47,7 +65,8 @@ Output MIDI files are saved to the `output/` directory.
 
 | File | Purpose |
 |------|---------|
-| `convert.sh` | One-command conversion script |
+| `download.sh` | Download from YouTube and convert to MIDI |
+| `convert.sh` | Convert local audio files to MIDI |
 | `fix_midi_for_petine.py` | MIDI post-processor for player piano compatibility |
 | `CLAUDE.md` | Documentation for AI assistants |
 

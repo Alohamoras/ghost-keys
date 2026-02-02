@@ -16,6 +16,9 @@ Ludovico Einaudi/
 # Output MIDI files
 output/
 
+# Downloaded audio files
+downloads/
+
 # macOS
 .DS_Store
 
