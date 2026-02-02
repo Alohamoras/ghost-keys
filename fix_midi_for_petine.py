@@ -13,6 +13,7 @@ or appends '_fixed.mid' to the filename.
 import sys
 from pathlib import Path
 import pretty_midi
+import mido
 
 
 def fix_midi_for_petine(input_path: str, output_path: str = None) -> str:
@@ -20,6 +21,7 @@ def fix_midi_for_petine(input_path: str, output_path: str = None) -> str:
     Fix a MIDI file for Petine compatibility:
     - Set program to 0 (Acoustic Grand Piano)
     - Remove all pitch bends
+    - Convert to Type 0 MIDI (single track) for compatibility
 
     Returns the output path.
     """
@@ -34,7 +36,7 @@ def fix_midi_for_petine(input_path: str, output_path: str = None) -> str:
     else:
         output_path = Path(output_path)
 
-    # Load and fix
+    # Load and fix with pretty_midi
     midi = pretty_midi.PrettyMIDI(str(input_path))
 
     total_notes = 0
@@ -46,12 +48,28 @@ def fix_midi_for_petine(input_path: str, output_path: str = None) -> str:
         inst.pitch_bends = []
         total_notes += len(inst.notes)
 
-    # Save
+    # Save temporarily
     midi.write(str(output_path))
+
+    # Convert to Type 0 MIDI using mido
+    mid = mido.MidiFile(str(output_path))
+    if mid.type != 0:
+        merged_track = mido.merge_tracks(mid.tracks)
+        new_mid = mido.MidiFile(type=0)
+        new_mid.tracks.append(merged_track)
+        new_mid.ticks_per_beat = mid.ticks_per_beat
+        new_mid.save(str(output_path))
+        converted_type = True
+    else:
+        converted_type = False
 
     print(f"✓ {input_path.name}")
     print(f"  → {output_path.name}")
-    print(f"  Notes: {total_notes}, Pitch bends removed: {removed_pitch_bends}")
+    print(f"  Notes: {total_notes}, Pitch bends removed: {removed_pitch_bends}", end="")
+    if converted_type:
+        print(", Converted to Type 0")
+    else:
+        print()
 
     return str(output_path)
 
